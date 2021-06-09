@@ -628,8 +628,13 @@
         * Sample Code
 
             ```java
+            //宣言方法
             //EntityクラスはTask_list.class, 主キーはString
             Repository<Task_list, String> Task_listRepos = new RepositoryImpl<>();
+
+            //利用方法
+            //用意しているメソッドは項目１０を参照してください。
+            Task_listRepos.save(task);　//これだけで保管できる
             ```
 
 9. Entityクラスの書き方
