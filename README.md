@@ -63,12 +63,12 @@
 
         ![Frameworkのリクエスト処理の流れ](./Usercreate.png)
 
-        ※あくまでも処理の一例です。
-        ①JSPから、Frameworkのservletにリクエストを送信
-        ②servletがActionを呼び出す
-        ③ActionがBusinessLogicを呼び出し、処理を行う
-        ④BusinessLogicがEntityを作成
-        ⑤BusinessLogicから、JPAを呼び出してDBへデータを格納orデータ取得
+        ※あくまでも処理の一例です。  
+        ①JSPから、Frameworkのservletにリクエストを送信  
+        ②servletがActionを呼び出す  
+        ③ActionがBusinessLogicを呼び出し、処理を行う  
+        ④BusinessLogicがEntityを作成  
+        ⑤BusinessLogicから、JPAを呼び出してDBへデータを格納orデータ取得  
 
 4. Frameworkの設定ファイルについて(DB設定、Bean設定、Action設定、BusinessLogic設定)😉
 
@@ -634,33 +634,16 @@
 
 9. Entityクラスの書き方
 
-   * annotation
+   * annotation  
 
-        * @SessionScoped()
+        * @SessionScoped()  
 
-            * 概要
-                クラス自体に付与するアノテーション。
-                このアノテーションが付与されていると、Sessionに自動格納される。
-                Sessionに格納する際のキー名をValueに指定する。
+            * 概要  
+                クラス自体に付与するアノテーション。  
+                このアノテーションが付与されていると、Sessionに自動格納される。  
+                Sessionに格納する際のキー名をValueに指定する。  
 
-            * 使い方
-
-                ```Java
-                @SessionScoped("tasklist")
-                @Entity
-                @Table("TASK_LIST")
-                public class Task_list {
-                    //
-                }
-                ```
-
-        * @Entity
-
-            * 概要
-                クラス自体に付与するアノテーション。
-                Entityクラスには必ず付与してください。
-
-            * 使い方
+            * 使い方  
 
                 ```Java
                 @SessionScoped("tasklist")
@@ -671,14 +654,13 @@
                 }
                 ```
 
-        * @Table()
+        * @Entity  
 
-            * 概要
-                クラス自体に付与するアノテーション。
-                Entityクラスには必ず付与してください。
-                valueには、対応するDBのテーブル名を定義してください。
+            * 概要  
+                クラス自体に付与するアノテーション。  
+                Entityクラスには必ず付与してください。  
 
-            * 使い方
+            * 使い方  
 
                 ```Java
                 @SessionScoped("tasklist")
@@ -689,42 +671,61 @@
                 }
                 ```
 
-        * @id
+        * @Table()  
 
-            * 概要
-                フィールド（プライマリキー）に設定するアノテーション。
+            * 概要  
+                クラス自体に付与するアノテーション。  
+                Entityクラスには必ず付与してください。  
+                valueには、対応するDBのテーブル名を定義してください。  
 
-            * 使い方
-                まとめて下記に記載します。
+            * 使い方  
 
-        * @column
+                ```Java
+                @SessionScoped("tasklist")
+                @Entity
+                @Table("TASK_LIST")
+                public class Task_list {
+                    //
+                }
+                ```
 
-            * 概要
-                フィールド（カラム）に設定するアノテーション。
+        * @id  
 
-            * 使い方
-                まとめて下記に記載します。
+            * 概要  
+                フィールド（プライマリキー）に設定するアノテーション。  
 
-        * @TimestampToDate
+            * 使い方  
+                まとめて下記に記載します。  
 
-            * 概要
-                JPAの使用上、DBのDate型がTimestampでしか取得できない。（Oracleの場合。MySQLは検証できていません。）
-                なので、Timestamp型で宣言した変数にはこれをつけてください。
+        * @column  
 
-            * 使い方
-                まとめて下記に記載します。
+            * 概要  
+                フィールド（カラム）に設定するアノテーション。  
 
-        * @OneToOne
-        * @OneToMany
-        * @ManyToOne
-        * @ManyToMany
+            * 使い方  
+                まとめて下記に記載します。  
 
-            * 概要
-                本物のJPAのアノテーションと同じ役割をします。（上４つ）
-                こいつの説明はすごく複雑なので、ちょっと使用する時にまた説明させてください。。。
+        * @TimestampToDate  
 
-            * 使い方
-                まとめて下記に記載します。
+            * 概要  
+                JPAの使用上、DBのDate型がTimestampでしか取得できない。  
+                （Oracleの場合。MySQLは検証できていません。）  
+                なので、Timestamp型で宣言した変数にはこれをつけてください。  
+
+            * 使い方  
+                まとめて下記に記載します。  
+
+        * @OneToOne  
+        * @OneToMany  
+        * @ManyToOne  
+        * @ManyToMany  
+
+            * 概要  
+                本物のJPAのアノテーションと同じ役割をします。（上４つ）  
+                こいつの説明はすごく複雑なので、ちょっと使用する時にまた説明させてください。。。  
+
+            * 使い方  
+                まとめて下記に記載します。  
 
         <details><summary> 記入例 </summary><div>
 
