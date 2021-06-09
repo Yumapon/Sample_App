@@ -20,6 +20,8 @@
     Eclipseで開いて、エラー吐いていなければOK(サーバが指定されていないとエラー出ちゃうかも。。)
     なんかエラー出たら別途相談してください。
 
+    ※現状、設定ファイルの外だしができていないので、cloneしてそのまま使ってください。
+
 2. githubリポジトリの準備（任意）😋
 
     * github cli使用ver
@@ -615,9 +617,282 @@
 
    * jpaを使用する
 
+        * 使い方
+
+            ```java
+            Repository<entityクラスの型, 主キーの型> <変数名> = new RepositoryImpl<>();
+            ```
+
+            jpaの詳細は、項目１０を参照してください。
+
+        * Sample Code
+
+            ```java
+            //EntityクラスはTask_list.class, 主キーはString
+            Repository<Task_list, String> Task_listRepos = new RepositoryImpl<>();
+            ```
+
 9. Entityクラスの書き方
 
-    　Comming Soon...
+   * annotation
+
+        * @SessionScoped()
+
+            * 概要
+                クラス自体に付与するアノテーション。
+                このアノテーションが付与されていると、Sessionに自動格納される。
+                Sessionに格納する際のキー名をValueに指定する。
+
+            * 使い方
+
+                ```Java
+                @SessionScoped("tasklist")
+                @Entity
+                @Table("TASK_LIST")
+                public class Task_list {
+                    //
+                }
+                ```
+
+        * @Entity
+
+            * 概要
+                クラス自体に付与するアノテーション。
+                Entityクラスには必ず付与してください。
+
+            * 使い方
+
+                ```Java
+                @SessionScoped("tasklist")
+                @Entity
+                @Table("TASK_LIST")
+                public class Task_list {
+                    //
+                }
+                ```
+
+        * @Table()
+
+            * 概要
+                クラス自体に付与するアノテーション。
+                Entityクラスには必ず付与してください。
+                valueには、対応するDBのテーブル名を定義してください。
+
+            * 使い方
+
+                ```Java
+                @SessionScoped("tasklist")
+                @Entity
+                @Table("TASK_LIST")
+                public class Task_list {
+                    //
+                }
+                ```
+
+        * @id
+
+            * 概要
+                フィールド（プライマリキー）に設定するアノテーション。
+
+            * 使い方
+                まとめて下記に記載します。
+
+        * @column
+
+            * 概要
+                フィールド（カラム）に設定するアノテーション。
+
+            * 使い方
+                まとめて下記に記載します。
+
+        * @TimestampToDate
+
+            * 概要
+                JPAの使用上、DBのDate型がTimestampでしか取得できない。（Oracleの場合。MySQLは検証できていません。）
+                なので、Timestamp型で宣言した変数にはこれをつけてください。
+
+            * 使い方
+                まとめて下記に記載します。
+
+        * @OneToOne
+        * @OneToMany
+        * @ManyToOne
+        * @ManyToMany
+
+            * 概要
+                本物のJPAのアノテーションと同じ役割をします。（上４つ）
+                こいつの説明はすごく複雑なので、ちょっと使用する時にまた説明させてください。。。
+
+            * 使い方
+                まとめて下記に記載します。
+
+        <details><summary> 記入例 </summary><div>
+
+      * SampleCode
+
+        ```java
+        package application.entity;
+
+        import jisaku_jpa.annotation.Entity;
+        import jisaku_jpa.annotation.Table;
+        import jisaku_jpa.annotation.TimestampToDate;
+        import jisaku_jpa.annotation.column;
+        import jisaku_jpa.annotation.id;
+        import jisaku_servlet.annotation.SessionScoped;
+
+        @SessionScoped("tasklist")
+        @Entity
+        @Table("TASK_LIST")
+        public class Task_list {
+
+            @id
+            @column
+            private String num;
+
+            @TimestampToDate
+            @column
+            private java.sql.Timestamp deadline; //めんどくさいけどこう書いてください。
+
+            @column
+            private String name;
+
+            @column
+            private String content;
+
+            @column
+            private String client;
+
+            public void setNum(String num) {
+                this.num = num;
+            }
+
+            public String getNum() {
+                return this.num;
+            }
+
+            public void setDeadline(java.sql.Date deadline) {//めんどくさいけどこう書いてください。
+                this.deadline = new java.sql.Timestamp(deadline.getTime());;
+            }
+
+            public java.sql.Date getDeadline() {//めんどくさいけどこう書いてください。
+                if(this.deadline == null) {
+                    return null;
+                }else {
+                    return new java.sql.Date(this.deadline.getTime());
+                }
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getName() {
+                return this.name;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public String getContent() {
+                return this.content;
+            }
+
+            public void setClient(String client) {
+                this.client = client;
+            }
+
+            public String getClient() {
+                return this.client;
+            }
+
+        }
+
+        ```
+
+        </div></details>
+
+10. Jisaku_JPAについて
+
+    <details><summary> これ見たらわかります。おそらく </summary><div>
+
+    * 用意しているメソッド
+
+        ```java
+        /**
+         * Repositoryインターフェースは、フレームワークを利用者側で使用するためのAPIインターフェースです。</br>
+         * 実装クラスは、{@link jisaku_jpa.dbMapper.RepositoryImpl}を参照</br>
+         *
+         * クラス定義の際、TにはEntityクラスの型を、IDにはPrimaryKeyを指定してください</br>
+         * @author okamotoyuuma
+         * @version 2.0.0
+         * @version 2021.04.09
+         */
+        public interface Repository<T, ID> {
+
+            /**
+             * saveメソッドは、引数で指定されたエンティティをDBに格納するクラスです。¸
+             * @param entity DBに格納するエンティティ
+             */
+            void save(T entity);
+
+            /**
+             * 指定された ID で識別されるエンティティを返します。
+             * @param primaryKey DBから検索したいエンティティの主キー
+             * @return paramで指定された主キーの検索結果を返す。（一致するものがない場合、NULL）
+             */
+            Optional<T> findById(ID primaryKey);
+
+            /**
+             * DBに格納されている全てのデータを返します。
+             * @return DBに格納されている全てのデータを返します。(DBに何も格納されていない場合、NULLを返す)
+             */
+            Optional<ArrayList<T>> findAll();
+
+            /**
+             * 指定された条件のエンティティを返します。
+             * @param entity
+             * @return
+             */
+            Optional<ArrayList<T>> findAll(T entity);
+
+            /**
+             * DBに格納されているデータの数を返します。
+             * @return データの数
+             */
+            int count();
+
+            /**
+             * 指定されたエンティティを削除します。
+             * @param 削除したいエンティティ
+             */
+            void delete(T entity);
+
+            /**
+             * 指定された ID のエンティティが存在するかどうかを判断する
+             * @param 検索したいデータの主キー
+             * @return 存在する場合TRUE、存在しない場合FALSE
+             */
+            boolean existsById(ID primaryKey);
+
+            /**
+             * 一部未実装
+             * 指定された ID で識別されるエンティティを返します。
+             * @param primaryKey
+             * @return
+             */
+            Optional<T> multiFindById(ID primaryKey);/*@ManyToManyに関しては未実装*/
+
+            /**
+             * 未実装
+             * @return
+             */
+            Iterable<T> multifindAll();/*未実装*/
+
+        }
+        ```
+
+        </div></details>
 
 ## Sample App
 
@@ -627,3 +902,26 @@ Comming Soon...
 
 * ログ多すぎ問題
 * Snakeyaml, Jacksonの除去
+* 設定ファイルの外だし
+* レベル２以上のAPI対応（現状はレベル１？）
+
+## (参考)REST成熟度モデル
+
+* <レベル０>  
+    レベル０サービスのクライアントは、唯一のURLエンドポイントにHTTP　POSTリクエストを送ってサービスを呼び出す。  
+    個々のリクエストは、実行するアクション、アクションのターゲット（例えばビジネスオブジェクト）、その他あらゆるパラメータを指定する。  
+
+* <レベル１>  
+    レベル１サービスは、リソースの概念をサポートする。リソースに対してアクションを実行したい時には、  
+    実行するアクションとパラメータを指定するPOSTリクエストを送る  
+
+* <レベル２>  
+    レベル２サービスは、アクションを実行するためにHTTP動詞を使用する。情報の取得ならGET、作成ならPOST、更新ならPUTとなる。  
+    アクションのパラメータは、リクエストのクエリー文字列とリクエスト本体（ある場合）で指定する。こうすると、サービスは、  
+    GETリクエストのキャッシングなどのWebインフラストラクチャを利用できる。  
+
+* <レベル３>  
+    レベル３サービスの設計は、HATEOAS（Hypertext As The Engine Of Application）という名前の原則に基づいている。  
+    基本的な考え方は、GETリクエストが返すリソースの表現にそのリソースに対するアクションのリンクを組み込むとういうことである。  
+    例えば、注文取得用のGETリクエストから返される表現に含まれているリンクを使えば、注文をキャンセルできる様にする。  
+    HATEOASには、クライアントコードにURLをハードコードしなくてもすむ様になるという利点がある。  
