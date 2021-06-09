@@ -6,6 +6,6 @@
 #type: usercreatesample.businessLogic.DefaultBusinessLogic #BL実装クラスのパス (src以下のパスを指定)
 ---
 !!jisaku_dicontainer.container.definition_entity.BusinessLogicDefinition
-interfaceClass: usercreatesample.businessLogic.BusinessLogic
+interfaceClass: application.businessLogic.BusinessLogic
 name: bl1
-type: usercreatesample.businessLogic.DefaultBusinessLogic
+type: application.businessLogic.DefaultBusinessLogic

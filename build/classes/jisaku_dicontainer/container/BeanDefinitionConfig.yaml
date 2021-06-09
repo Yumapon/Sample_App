@@ -6,12 +6,12 @@
 ---
 !!jisaku_dicontainer.container.definition_entity.BeanDefinition
 name: createTask
-type: usercreatesample.beans.CreateTaskEntity
+type: application.beans.CreateTaskEntity
 ---
 !!jisaku_dicontainer.container.definition_entity.BeanDefinition
 name: userInfo
-type: usercreatesample.beans.UserInfoEntity
+type: application.beans.UserInfoEntity
 ---
 !!jisaku_dicontainer.container.definition_entity.BeanDefinition
 name: deleteTask
-type: usercreatesample.beans.DeleteTaskEntity
+type: application.beans.DeleteTaskEntity

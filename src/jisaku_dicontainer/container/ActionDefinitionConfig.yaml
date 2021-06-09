@@ -6,8 +6,8 @@
 ---
 !!jisaku_dicontainer.container.definition_entity.ActionDefinition
 name: action
-type: usercreatesample.actions.Action
+type: application.actions.Action
 ---
 !!jisaku_dicontainer.container.definition_entity.ActionDefinition
 name: loginAction
-type: usercreatesample.actions.LoginAction
+type: application.actions.LoginAction

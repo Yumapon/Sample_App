@@ -40,7 +40,7 @@ import jisaku_servlet.exception.IlligalMethodNameException;
  * @version 1.0.0
  * @version 2021.04.20
  */
-@WebServlet("/*")
+@WebServlet("/HogeHogeServlet")
 public class HogeHogeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
